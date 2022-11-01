@@ -141,3 +141,132 @@ public:
 
 ```
 
+LeetCode : 35和二分查找基本相同
+
+---
+
+
+
+### LeetCode : 34
+
+>给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。
+>
+>如果数组中不存在目标值 target，返回 [-1, -1]。
+>
+>你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题
+>
+>来源：力扣（LeetCode）
+>链接：https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array
+>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+我的思路
+
+	1. 用二分查找查到该元素，然后在向左向右查找到边界
+ 	2. 用双指针从左边开始查一个，从右边开始查一个 返回[i , j]
+
+//可能有错误 本地调试可以得出答案，LeetCode上传报错
+
+
+
+法一 ：
+
+- [ ] 需要修改查错
+
+```c++
+
+/*
+    双指针或者二分查找
+        1. 二分查找 查到一个然后一个向左右两边扩 找到边界
+
+        2. 双指针查找两次遍历
+*/
+
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+class Solution
+{
+public:
+    vector<int> searchRange(vector<int> &nums, int target)
+    {
+        int left = 0;
+        int right = nums.size() - 1;
+
+        while (left <= right)
+        {
+            int mid = left + ((right - left) >> 1);
+            if (target > nums[mid])
+            {
+                left = mid + 1;
+            }
+            else if (target < nums[mid])
+            {
+                right = mid - 1;
+            }
+            else
+            {
+                int i = mid; //左找
+                int j = mid; //右找
+                while (nums[--i] == target && i >= 0)
+                {
+                    continue;
+                };
+                i += 1;
+                while (nums[++j] == target && j <= nums.size() - 1)
+                {
+                    continue;
+                };
+                j -= 1;
+                return vector<int>{i, j};
+            }
+        }
+        return vector<int>{-1, -1};
+    }
+};
+
+int main()
+{
+
+    Solution solution;
+
+    vector<int> nums = {1};
+    int target = 1;
+
+    //[5,7,7,8,8,10]
+    // 6
+    vector<int> ans = solution.searchRange(nums, target);
+
+    cout << ans[0] << "\n"
+         << ans[1] << endl;
+
+    return 0;
+}
+
+```
+
+
+
+法二 ：
+
+```c++
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        auto left=find(nums.cbegin(),nums.cend(),target);//寻找左边第一个出现的数    
+        int i=-1,j=-1;//初始化下标为-1
+        if(left!=nums.cend()){//左边找到
+            i=left-nums.cbegin();//迭代器差值求下标
+            j=nums.crend()-1-find(nums.crbegin(),nums.crend(),target);//寻找右边第一个出现的数，迭代器差值求下标
+        }
+        return {i,j};
+    }
+};
+
+```
+

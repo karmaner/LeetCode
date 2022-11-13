@@ -11,6 +11,19 @@
 ### 题序 ：
 
 * [LeetCode 704 ： 二分搜索](https://leetcode.cn/problems/binary-search/ "二分查找")
-
 * [LeetCode 3 5 ：二分搜索1](https://leetcode.cn/problems/search-insert-position "练习题")
+
+---
+
+
+
+
+
++ LeetCode 27 ：元素移除
+
++ LeetCode 26 ：重复元素的移除
+
+  ​																											2022/11/13 21:15
+
+----
 

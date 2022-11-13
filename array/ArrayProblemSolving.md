@@ -343,3 +343,156 @@ int main()
 ```
 
 向右边界去找分界数
+
+
+
+---
+
+2022/11/13 
+
+LeetCode : 27元素移除
+
+```c++
+/*
+    2022/11/13
+        LeetCode 27元素移除
+    思路找到元素 然后元素前移
+*/
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+class Solution
+{
+public:
+    int removeElement(vector<int> &nums, int val)
+    {
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (val == nums[i])
+            {
+                int j = i;
+                while (j < nums.size() - 1)
+                {
+                    nums[j] = nums[j + 1]; // 元素前移
+                    j++;
+                }
+                nums.pop_back();
+                i--; // 防止索引下移 索引回溯
+            }
+        }
+        return nums.size();
+    }
+};
+
+int main()
+{
+
+    Solution solution;
+    vector<int> nums = {0, 1, 2, 2, 3, 0, 4, 2};
+    int len = solution.removeElement(nums, 2);
+    cout << len;
+    return 0;
+}
+
+```
+
+>算法分析：
+>
+>时间复杂度：实际上这是一种两次遍历O(n^2) 
+>
+>空间复杂： O(1)
+
+法二：
+
+>双指针(快慢指针)
+
+```c++
+class Solution
+{
+public:
+    int removeElement(vector<int> &nums, int val)
+    {
+        int slowIndex = 0;
+        for (int fastIndex = 0; fastIndex < nums.size(); fastIndex++)
+        {
+            if (nums[fastIndex] != val)
+                nums[slowIndex++] = nums[fastIndex]; // 双指针实现元素交换
+        }
+        return slowIndex;
+    }
+};
+```
+
+时间复杂度位O(n)
+
+空间复杂度位O(1)
+
+---
+
+LeetCode 26
+
+```c++
+/*
+    LeetCode 26
+    给你一个 升序排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。元素的 相对顺序 应该保持 一致 。
+
+    由于在某些语言中不能改变数组的长度，所以必须将结果放在数组nums的第一部分。更规范地说，如果在删除重复项之后有 k 个元素，那么 nums 的前 k 个元素应该保存最终结果。
+
+    将最终结果插入 nums 的前 k 个位置后返回 k 。
+
+    不要使用额外的空间，你必须在 原地 修改输入数组 并在使用 O(1) 额外空间的条件下完成。
+
+    判题标准:
+
+    来源：力扣（LeetCode）
+    链接：https://leetcode.cn/problems/remove-duplicates-from-sorted-array
+    著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+    思路：
+
+    2022/11/13
+*/
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+class Solution
+{
+public:
+    int removeDuplicates(vector<int> &nums)
+    {
+        int fastIndex = 0; // 用来找重复数据
+        int slowIndex = 0; // 记录存储位置
+        for (fastIndex = 0; fastIndex < nums.size() - 1; fastIndex++)
+        {
+            if (nums[fastIndex] != nums[fastIndex + 1])
+            {
+                nums[slowIndex] = nums[fastIndex]; // 开存
+                slowIndex++;                       // 索引后移
+            }
+        }
+        nums[slowIndex] = nums[fastIndex + 1]; // 尾部数据的处理
+        return slowIndex + 1;                  // 尾部数据的处理
+    }
+};
+
+int main()
+{
+    Solution solution;
+    vector<int> nums = {1, 1, 2};
+    int len = solution.removeDuplicates(nums);
+    cout << len << endl;
+    return 0;
+}
+```
+
+
+

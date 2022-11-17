@@ -535,3 +535,114 @@ int main()
 
 ```
 
+
+
+---
+
+元素移除 LeetCode 844 算是我第一次用栈来实现算法吧
+
+```c++
+/*
+    LeetCode:884
+
+
+        思路：
+            1.用栈存储，每次遇到#pop一个元素。
+
+*/
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution
+{
+public:
+    bool backspaceCompare(string s, string t)
+    {
+        s = toNewsting(s);
+        t = toNewsting(t);
+        return s == t;
+    }
+    string toNewsting(string s)
+    {
+        string ans;
+        for (int Index = 0; Index < s.length(); Index++)
+        {
+            if (s[Index] != '#')
+            {a
+                ans.push_back(s[Index]);
+            }
+            else if (!ans.empty())
+            {
+                ans.pop_back();
+            }
+        }
+        return ans;
+    }
+};
+
+int main()
+{
+    string s = "a#cdd";
+    string t = "b";
+    Solution solution;
+    bool box = solution.backspaceCompare(s, t);
+    cout << box << endl;
+    return 0;
+}
+```
+
+LeetCode ：997
+
+```c++
+/*
+    2022/11/17
+    LeetCode 977
+
+    给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
+
+    双指针 给左右两个指针
+*/
+
+#include <iostream>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+class Solution
+{
+public:
+    vector<int> sortedSquares(vector<int> &nums)
+    {
+        int left = 0;
+        int right = nums.size() - 1;
+        int n = right;
+        vector<int> ans(nums.size(), 0);
+        if (nums[left] * nums[left] >= nums[right] * nums[right])
+        {
+            ans[n--] = nums[left] * nums[left];
+            left++;
+        }
+        else
+        {
+            ans[n--] = nums[right] * nums[right];
+            right--;
+        }
+        return ans;
+    }
+};
+int main()
+{
+    Solution solution;
+    return 0;
+}
+
+```
+
+​																																				2022/11/17
+
+---
+

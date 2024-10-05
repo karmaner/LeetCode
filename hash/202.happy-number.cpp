@@ -1,9 +1,17 @@
+// @lcpr-before-debug-begin
+
+
+
+
+// @lcpr-before-debug-end
+
 /*
  * @lc app=leetcode.cn id=202 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [202] 快乐数
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,10 +32,23 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
+std::unordered_map<int, bool> map;  // 放在类外面就解开了
 public:
-    bool isHappy(int n)
+    bool s1_isHappy(int n) { // 递归调用 查重(重复false 不重复满足条件)
+        if(n == 1) return true;
+        if(map[n]) return false;
+        map[n] = true;
+        int new_num = 0;
+        while(n) {
+            int last_digit = n % 10;
+            new_num += last_digit * last_digit;
+            n /= 10;
+        }
+        return s1_isHappy(new_num);
+    }
+
+    bool s2_isHappy(int n) // 递归
     {
         if (n > 1 && n < 10 && n != 7)
             return false;
@@ -44,8 +65,38 @@ public:
         else
             return isHappy(new_n);
     }
+private:
+    int getSum(int n) {
+        int new_num = 0;
+        while(n) {
+            int last_digit = n % 10;
+            new_num += last_digit * last_digit;
+            n /= 10;
+        }
+        return new_num;
+    }
+
+    bool s3_isHappy(int n) {    // 快慢指针
+        int fast = n;
+        int slow = n;
+
+        while(true) {
+            slow = getSum(slow);
+            fast = getSum(fast);
+            fast = getSum(fast);
+
+            if(fast == 1) return true;
+            if(fast == slow) return false;
+        }
+    }
+public:
+    bool isHappy(int n) {
+        return s3_isHappy(n);
+    }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -57,3 +108,4 @@ public:
 // @lcpr case=end
 
  */
+

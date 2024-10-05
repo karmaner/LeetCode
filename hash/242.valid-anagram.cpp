@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=242 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [242] 有效的字母异位词
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,35 +25,58 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
 public:
-    bool isAnagram(string s, string t)
-    {
-        unordered_map<char, int> s_num;
-        unordered_map<char, int> t_num;
+    bool s1_isAnagram(string s, string t) {
+        if(s.size() != t.size()) return false;
 
-        for (auto ch : s)
-        {
-            s_num[ch]++;
+        // unordered_map<char, int> maps;
+        int maps[26];
+        // unordered_map<char, int> mapt;
+        int mapt[26];
+        for(auto c : s) {
+            maps[c - 'a']++;
         }
-
-        for (auto ch : t)
-        {
-            t_num[ch]++;
+        for(auto c : t) {
+            mapt[c - 'a']++;
         }
-
-        if (s_num.size() != t_num.size())
-            return false;
-        for (auto iter : s_num)
-        {
-            if (t_num[iter.first] != iter.second)
+        for(auto c : s) {
+            if(maps[c - 'a'] != mapt[c - 'a']) {
                 return false;
+            }
         }
         return true;
     }
+
+    bool s2_isAnagram(string s, string t) { // 排序字符串
+        if(s.size() != t.size()) return false;
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        return s == t;
+    }
+    bool s3_isAnagram(string s, string t) {
+        int map[26];
+        for(auto c : s) {
+            map[c - 'a']++;
+        }
+        for(auto c : t) {
+            map[c - 'a']--;
+        }
+        for(auto i : map) {
+            if(i != 0) return false;
+        }
+        return true;
+    }
+public:
+    bool isAnagram(string s, string t) {
+        // return s1_isAnagram(s, t);
+        // return s2_isAnagram(s, t);
+        return s3_isAnagram(s, t);
+    }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -64,3 +88,4 @@ public:
 // @lcpr case=end
 
  */
+

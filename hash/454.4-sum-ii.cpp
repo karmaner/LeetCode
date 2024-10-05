@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=454 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [454] 四数相加 II
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,33 +25,36 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
 public:
-    int fourSumCount(vector<int> &nums1, vector<int> &nums2, vector<int> &nums3, vector<int> &nums4)
-    {
-        unordered_map<int, int> umap;
-        // 记录ab两数之和
-        for (int a : nums1)
-        {
-            for (int b : nums2)
-            {
-                umap[a + b]++;
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        std::unordered_map<int, int> sum12;
+        std::unordered_map<int, int> sum34;
+
+        for(auto i : nums1) {   // 1 2数组出现的和次数
+            for(auto j : nums2) {
+                sum12[i + j]++;
             }
         }
-        int count = 0;
-        for (int c : nums3)
-        {
-            for (int d : nums4)
-            {
-                if (umap[0 - c - d] != 0)
-                    count += umap[0 - c - d];
+
+        for(auto i : nums3) {   // 3 4数组出现的和次数
+            for(auto j : nums4) {
+                sum34[i + j]++;
             }
         }
-        return count;
+
+        int times = 0;
+        for(auto s : sum12) {
+            if(sum34[-s.first] > 0) {
+                times += (s.second * sum34[-s.first]);
+            }
+        }
+        return times;
     }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -62,3 +66,4 @@ public:
 // @lcpr case=end
 
  */
+

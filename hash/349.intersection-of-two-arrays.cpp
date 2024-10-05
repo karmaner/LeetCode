@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=349 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [349] 两个数组的交集
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,31 +25,46 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
 public:
-    vector<int> intersection(vector<int> &nums1, vector<int> &nums2)
-    {
-        unordered_map<int, int> map1;
-        unordered_map<int, int> map2;
-        for (auto i : nums1)
-        {
-            map1[i] = 1;
-        }
-        for (auto i : nums2)
-        {
-            map2[i] = 1;
+    vector<int> s1_intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int, bool> map;
+        for(auto i : nums1) {
+            map[i] = true;
         }
         vector<int> ans;
-        for (auto i : map1)
-        {
-            if (map2[i.first] == 1)
-                ans.push_back(i.first);
+        for(auto i : nums2) {
+            if(map[i] == true) {
+                auto f = find(ans.begin(), ans.end(), i);
+                if(f == ans.end())
+                    ans.push_back(i);
+            }
         }
         return ans;
     }
+
+    vector<int> s2_intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> set;
+        int hash[1005] = {0};
+        for(auto i : nums1) {
+            hash[i] = 1;
+        }
+        for(auto i : nums2) {
+            if(hash[i] == 1) {
+                set.insert(i);  // 去重
+            }
+        }
+        return vector<int>(set.begin(), set.end());
+    }
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // return s1_intersection(nums1, nums2);
+        return s2_intersection(nums1, nums2);
+    }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -60,3 +76,4 @@ public:
 // @lcpr case=end
 
  */
+

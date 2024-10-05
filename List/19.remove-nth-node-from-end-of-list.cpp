@@ -1,13 +1,10 @@
-// @lcpr-before-debug-begin
-
-// @lcpr-before-debug-end
-
 /*
  * @lc app=leetcode.cn id=19 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [19] 删除链表的倒数第 N 个结点
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -38,38 +35,63 @@ using namespace std;
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution
-{
+class Solution {
 public:
-    ListNode *removeNthFromEnd(ListNode *head, int n)
-    {
-        /* 快节点向走n步， 快指针走到头时，慢节点走到删除节点 */
-        ListNode *dummy = new ListNode(0, head); // 哑节点
-        ListNode *fast = dummy;
-        ListNode *slow = dummy;
-        // 快指针先走n步
-        for (int i = 0; i < n + 1; i++)
-        {
+    ListNode* s1_removeNthFromEnd(ListNode* head, int n) {  // stack
+        std::stack<ListNode*> stk;
+        ListNode* cur = head;
+        while(cur) {
+            stk.push(cur);
+            cur = cur->next;
+        }
+        while(n--) {
+            stk.pop();
+        }
+        if(stk.empty()) {   // 移除头节点
+            ListNode* tmp = head;
+            head = head->next;
+            delete tmp;
+            return head;
+        }
+        cur = stk.top();
+        ListNode* tmp = cur->next;
+        cur->next = tmp->next;
+        delete tmp;
+        return head;
+    }
+
+    ListNode* s2_removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummyHead = new ListNode(0);
+        dummyHead->next = head;
+
+        ListNode* slow = dummyHead;
+        ListNode* fast = dummyHead;
+        // FIXED:头节点问题
+        while(n-- && fast != nullptr) {    // n
             fast = fast->next;
         }
-        // 快慢指针同时走，直到快指针走到尾部
-        while (fast != nullptr)
-        {
-            fast = fast->next;
+        fast = fast->next; // + 1
+        while(fast != nullptr) {
             slow = slow->next;
+            fast = fast->next;
         }
-        // 删除倒数第n个节点
-        ListNode *temp = slow->next;
-        slow->next = slow->next->next;
-        delete temp;
-        // 返回删除节点后的链表头节点
-        ListNode *new_head = dummy->next;
-        delete dummy;
-        return new_head;
+        
+        ListNode* tmp = slow->next;
+        slow->next = tmp->next;
+        delete tmp;
+        head = dummyHead->next;
+        delete dummyHead;
+        return head;
+    }
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        // return s2_removeNthFromEnd(head, n);
+        return s1_removeNthFromEnd(head, n);
     }
 };
-
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -85,3 +107,4 @@ public:
 // @lcpr case=end
 
  */
+

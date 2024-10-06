@@ -1,48 +1,49 @@
 /*
  * @lc app=leetcode.cn id=344 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [344] 反转字符串
  */
 
-// @lcpr-template-start
-using namespace std;
-#include <algorithm>
-#include <array>
-#include <bitset>
-#include <climits>
-#include <deque>
-#include <functional>
-#include <iostream>
-#include <list>
-#include <queue>
-#include <stack>
-#include <tuple>
-#include <unordered_map>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-// @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
 public:
-    void reverseString(vector<char> &s)
-    {
-        int left = 0, right = s.size() - 1;
-        char temp = ' ';
+    void s1_reverseString(vector<char>& s) {
+        return reverse(s.begin(), s.end());
+    }
 
-        while (left < right)
-        {
-            temp = s[right];
-            s[right] = s[left];
-            s[left] = temp;
+    template<typename T>
+    void swap(T& a, T& b) {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    template<typename T>
+    void swap_bit(T& a, T& b) {
+        a ^= b;
+        b ^= a;
+        a ^= b;
+    }
+
+    void s2_reverseString(vector<char>& s) {
+        int left = 0, right = s.size() - 1;
+        while(left <= right) {
+            // std::swap(s[left], s[right]);
+            swap(s[left], s[right]);
             left++;
             right--;
         }
     }
+public:
+    void reverseString(vector<char>& s) {
+        // return s1_reverseString(s);
+        return s2_reverseString(s);
+    }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -54,3 +55,4 @@ public:
 // @lcpr case=end
 
  */
+

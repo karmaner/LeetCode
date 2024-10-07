@@ -1,13 +1,10 @@
-// @lcpr-before-debug-begin
-
-// @lcpr-before-debug-end
-
 /*
  * @lc app=leetcode.cn id=1047 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [1047] 删除字符串中的所有相邻重复项
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -28,36 +25,27 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
 public:
-    string removeDuplicates(string s)
-    {
-        stack<char> st;
-        string ans = "";
-        st.push(s[0]);
-        for (int i = 1; i < s.size(); i++)
-        {
-            if (st.empty() || st.top() != s[i])
-                st.push(s[i]);
-            else
-                st.pop();
+    string removeDuplicates(string s) {
+        string stk;
+        for(auto c : s) {
+            if(stk.empty()) {
+                stk.push_back(c);
+            } else {
+                if(c == stk.back()) {
+                    stk.erase(stk.end() - 1);
+                } else {
+                    stk.push_back(c);
+                }
+            }
         }
-
-        while (!st.empty())
-        {
-            ans += st.top();
-            st.pop();
-        }
-        for (int i = 0, j = ans.size() - 1; i <= j; i++, j--)
-        {
-            swap(ans[i], ans[j]);
-        }
-        return ans;
+        return stk;
     }
 };
-
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -65,3 +53,4 @@ public:
 // @lcpr case=end
 
  */
+

@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=17 lang=cpp
- * @lcpr version=30112
+ * @lcpr version=30204
  *
  * [17] 电话号码的字母组合
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,51 +25,49 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
-private:
-  const string letterMap[10] = {
-    "",     // 0
-    "",     // 1
-    "abc",  // 2
-    "def",  // 3
-    "ghi",  // 4
-    "jkl",  // 5
-    "mno",  // 6
-    "pqrs", // 7
-    "tuv",  // 8
-    "wxyz", // 9
-  };
 
+class Solution {
 public:
-  vector<string> ans;
-  string s;
+    std::unordered_map<char, string> map {
+        {'2', "abc"},
+        {'3', "def"},
+        {'4', "ghi"},
+        {'5', "jkl"},
+        {'6', "mno"},
+        {'7', "pqrs"},
+        {'8', "tuv"},
+        {'9', "wxyz"}
+    };
+private:
+    vector<string> ans;
+    string path;
+public:
+    void backtracking(int start_num, int start_map, const string& digits) {
+        if(path.size() > digits.size()) return;
+        
+        if(path.size() == digits.size()) {
+            if(path.size() != 0)
+                ans.push_back(path);
+            return;
+        }
 
-  void backtracking(const string& digits, int index)
-  {
-    if (index == digits.size()) {
-      ans.push_back(s);
-      return;
+        for(int i = start_num; i < digits.size(); ++i) {
+            for(int j = 0; j < map[digits[i]].size(); j++) {
+                path.push_back(map[digits[i]][j]);
+                backtracking(i + 1, j, digits);
+                path.pop_back();
+            }
+        }
     }
-    int digit = digits[index] - '0';   // 将index指向的数字转为int
-    string letters = letterMap[digit]; // 取数字对应的字符集
-    for (int i = 0; i < letters.size(); i++) {
-      s.push_back(letters[i]);
-      backtracking(digits, index + 1);
-      s.pop_back();
+public:
+    vector<string> letterCombinations(string digits) {
+        backtracking(0, 0, digits);
+        return ans;
     }
-  }
-
-  vector<string> letterCombinations(string digits)
-  {
-    if (digits.size() == 0) {
-      return ans;
-    }
-    backtracking(digits, 0);
-    return ans;
-  }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -84,3 +83,4 @@ public:
 // @lcpr case=end
 
  */
+

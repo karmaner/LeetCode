@@ -1,13 +1,10 @@
-// @lcpr-before-debug-begin
-
-// @lcpr-before-debug-end
-
 /*
  * @lc app=leetcode.cn id=150 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [150] 逆波兰表达式求值
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -29,44 +26,35 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int evalRPN(vector<string> &tokens) {
-    // 遇到符号就计算 并且 把结果压入栈内
-    stack<int> st;
-    int op1 = 0, op2 = 0;
-    for (auto s : tokens) {
-      if (s == "+") {
-        op1 = st.top();
-        st.pop();
-        op2 = st.top();
-        st.pop();
-        st.push(op1 + op2);
-      } else if (s == "-") {
-        op1 = st.top();
-        st.pop();
-        op2 = st.top();
-        st.pop();
-        st.push(op2 - op1);
-      } else if (s == "*") {
-        op1 = st.top();
-        st.pop();
-        op2 = st.top();
-        st.pop();
-        st.push(op2 * op1);
-      } else if (s == "/") {
-        op1 = st.top();
-        st.pop();
-        op2 = st.top();
-        st.pop();
-        st.push(op2 / op1);
-      } else {  // 整数
-        st.push(stoi(s));
-      }
+#define XX(op) \
+    int num1 = ans.top(); \
+    ans.pop(); \
+    int num2 = ans.top(); \
+    ans.pop(); \
+    ans.push(num2 op num1); 
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> ans;
+        for(auto s : tokens) {
+            if(s == "+") {
+                XX(+);
+            } else if(s == "-") {
+                XX(-);
+            } else if(s == "*") {
+                XX(*);
+            } else if(s == "/") {
+                XX(/);
+            } else {
+                int num = std::stoi(s);
+                ans.push(num);
+            }
+        }
+        return ans.top();
     }
-    return st.top();
-  }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -82,3 +70,4 @@ class Solution {
 // @lcpr case=end
 
  */
+

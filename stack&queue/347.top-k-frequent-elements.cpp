@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=347 lang=cpp
- * @lcpr version=30111
+ * @lcpr version=30204
  *
  * [347] 前 K 个高频元素
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,33 +25,67 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+// 小顶堆
+class mycomparison {
 public:
-  vector<int> topKFrequent(vector<int>& nums, int k)
-  {
-    vector<int> ans;
-    // 频率统计
-    unordered_map<int, int> map;
-    for (auto i : nums) {
-      map[i]++;
+    bool operator()(const pair<int, int>& lhs, const pair<int, int>& rhs) {
+        return lhs.second > rhs.second;
     }
-    unordered_map<int, int>::iterator it;
-    for (int i = 0; i < k; i++) {
-      int max = 0, mark = 0;
-      for (it = map.begin(); it != map.end(); it++) {
-        if (it->second > max) {
-          max = it->second;
-          mark = it->first;
+};
+
+class Solution {
+public:
+    vector<int> s1_topKFrequent(vector<int>& nums, int k) { // 本质上是一个排序
+        std::unordered_map<int, int> map;
+        for(auto i : nums) {
+            map[i]++;
         }
-      }
-      ans.push_back(mark);
-      map[mark] = -1;
+        vector<pair<int,int> > temp(map.begin(), map.end());
+        sort(temp.begin(), temp.end(), [] (pair<int, int>& a, pair<int, int>& b) {
+            return a.second > b.second;
+        });
+
+        vector<int> ans;
+        for(int i = 0; i < k; ++i) {
+            ans.push_back(temp[i].first);
+        }
+        return ans;
     }
-    return ans;
-  }
+
+    // 优先队列
+    vector<int> s2_topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> map;
+        for(auto i : nums) {
+            map[i]++;
+        }
+
+        // 定义一个小顶堆
+        std::priority_queue<pair<int, int>, vector<pair<int, int> >, mycomparison> pri_que;
+
+        for(unordered_map<int, int>::iterator it = map.begin(); it != map.end(); it++) {
+            pri_que.push(*it);
+            if(pri_que.size() > k) {
+                pri_que.pop();
+            }
+        }
+
+        vector<int> ans(k);
+        for(int i = k - 1; i >= 0; --i) {
+            ans[i] = pri_que.top().first;
+            pri_que.pop();
+        }
+        return ans;
+
+    }
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        // return s1_topKFrequent(nums, k);
+        return s2_topKFrequent(nums, k);
+    }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -62,3 +97,4 @@ public:
 // @lcpr case=end
 
  */
+

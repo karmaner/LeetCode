@@ -1,16 +1,10 @@
-// @lcpr-before-debug-begin
-
-
-
-
-// @lcpr-before-debug-end
-
 /*
  * @lc app=leetcode.cn id=46 lang=cpp
- * @lcpr version=30113
+ * @lcpr version=30204
  *
  * [46] 全排列
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -31,40 +25,35 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
+vector<int> path;
+vector<vector<int> > ans;
+
+void backtracking(vector<int>& nums, vector<bool>& used) {
+    if(path.size() == nums.size()) {
+        ans.push_back(path);
+        return;
+    }
+
+    for(int i = 0; i < nums.size(); ++i) {
+        if (used[i]) continue;
+        path.push_back(nums[i]);
+        used[i] = true;
+        backtracking(nums, used);
+        used[i] = false;
+        path.pop_back();
+    }
+}
 public:
-  vector<vector<int>> ans;
-
-  vector<int> path;
-
-  void backtracking(vector<int>& nums, vector<bool>& used)
-  {
-
-    if (path.size() == nums.size()) {
-      ans.push_back(path);
-      return;
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<bool> used(nums.size(), false);
+        backtracking(nums, used);
+        return ans;
     }
-
-    for (int i = 0; i < nums.size(); i++) {
-      if (used[i] == true)
-        continue;
-      path.push_back(nums[i]);
-      used[i] = true;
-      backtracking(nums, used);
-      path.pop_back();
-      used[i] = false;
-    }
-  }
-  vector<vector<int>> permute(vector<int>& nums)
-  {
-    vector<bool> used(nums.size(), false);
-    backtracking(nums, used);
-
-    return ans;
-  }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -80,3 +69,4 @@ public:
 // @lcpr case=end
 
  */
+

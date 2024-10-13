@@ -1,13 +1,17 @@
 // @lcpr-before-debug-begin
 
+
+
+
 // @lcpr-before-debug-end
 
 /*
- * @lc app=leetcode.cn id=90 lang=cpp
- * @lcpr version=30113
+ * @lc app=leetcode.cn id=491 lang=cpp
+ * @lcpr version=30204
  *
- * [90] 子集 II
+ * [491] 非递减子序列
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,55 +28,57 @@ using namespace std;
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
+#include <set>
 #include <utility>
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
-public:
-  // 记录结果
-  vector<vector<int>> ans;
+class Solution {
+vector<int> path;
+vector<vector<int> > ans;
 
-  // 记录路径
-  vector<int> path;
+void backtracking(int start, vector<int>& nums) {
+    if(path.size() > 1)
+        ans.push_back(path);
 
-  // 回溯算法 相比78 需要对元素去重
-  void backtracking(vector<int>& nums, int startIndex, vector<bool>& used)
-  {
-
-    ans.push_back(path);
-
-    for (int i = startIndex; i < nums.size(); i++) {
-      // used[i - 1] == true，说明同一树枝candidates[i - 1]使用过
-      // used[i - 1] == false，说明同一树层candidates[i - 1]使用过
-      // 而我们要对同一树层使用过的元素进行跳过
-      if (i > 0 && nums[i] == nums[i - 1] && used[i - 1] == false)
-        continue;
-      path.push_back(nums[i]);
-      used[i] = true;
-      backtracking(nums, i + 1, used);
-      path.pop_back();
-      used[i] = false;
+    unordered_set<int> used;  // 用于当前层去重
+    for(int i = start; i < nums.size(); ++i) {
+        // 如果在同一层递归中已经使用过相同的元素，跳过
+        if(used.find(nums[i]) != used.end()) {
+            continue;
+        }
+        
+        // 如果当前元素比路径中最后一个元素大或等于，添加到路径中
+        if(path.empty() || nums[i] >= path.back()) {    // 短路操作
+            used.insert(nums[i]);  // 记录当前元素，避免同一层重复
+            path.push_back(nums[i]);
+            backtracking(i + 1, nums);
+            path.pop_back();  // 回溯，撤销选择
+        }
     }
-  }
-  vector<vector<int>> subsetsWithDup(vector<int>& nums)
-  {
-    sort(nums.begin(), nums.end());
-    vector<bool> used(nums.size(), false);
-    backtracking(nums, 0, used);
-    return ans;
-  }
+}
+
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        ans.clear();
+        path.clear();
+        backtracking(0, nums);
+        return ans;
+    }
 };
+
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
-// [1,2,2]\n
+// [4,6,7,7]\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [0]\n
+// [4,4,3,2,1]\n
 // @lcpr case=end
 
  */
+

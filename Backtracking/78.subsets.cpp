@@ -1,9 +1,10 @@
 /*
  * @lc app=leetcode.cn id=78 lang=cpp
- * @lcpr version=30112
+ * @lcpr version=30204
  *
  * [78] 子集
  */
+
 
 // @lcpr-template-start
 using namespace std;
@@ -24,36 +25,27 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class Solution
-{
+class Solution {
+vector<int> path;
+vector<vector<int> > ans;
+void backtracking(int start, vector<int>& nums) {
+
+    ans.push_back(path);
+    for(int i = start; i < nums.size(); ++i) {
+        path.push_back(nums[i]);
+        backtracking(i + 1, nums);
+        path.pop_back();
+    }
+}
 public:
-  // 结果集合
-  vector<vector<int>> result;
-
-  // 路径解
-  vector<int> path;
-
-  void backtracking(vector<int>& nums, int startIndex)
-  {
-
-    result.push_back(path);
-    if (startIndex >= nums.size()) {
-      return;
+    vector<vector<int>> subsets(vector<int>& nums) {
+        backtracking(0, nums);
+        return ans;
     }
-
-    for (int i = startIndex; i < nums.size(); i++) {
-      path.push_back(nums[i]);
-      backtracking(nums, i + 1);
-      path.pop_back();
-    }
-  }
-  vector<vector<int>> subsets(vector<int>& nums)
-  {
-    backtracking(nums, 0);
-    return result;
-  }
 };
 // @lc code=end
+
+
 
 /*
 // @lcpr case=start
@@ -65,3 +57,4 @@ public:
 // @lcpr case=end
 
  */
+

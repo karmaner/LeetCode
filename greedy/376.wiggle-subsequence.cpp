@@ -27,20 +27,41 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    int wiggleMaxLength(vector<int>& nums) {
-        if (nums.size() <= 1) return nums.size();
-        int curDiff = 0; // 当前一对差值
-        int preDiff = 0; // 前一对差值
-        int result = 1;  // 记录峰值个数，序列默认序列最右边有一个峰值
-        for (int i = 0; i < nums.size() - 1; i++) {
-            curDiff = nums[i + 1] - nums[i];
-            // 出现峰值
-            if ((preDiff <= 0 && curDiff > 0) || (preDiff >= 0 && curDiff < 0)) {
-                result++;
-                preDiff = curDiff; // 注意这里，只在摆动变化的时候更新prediff
-            }
+    int s1_wiggleMaxLength(vector<int>& nums) { 
+        if(nums.size() < 2) return nums.size();
+        vector<int> op(nums.size() - 1);
+        for(int i = 0; i < nums.size() - 1; ++i) {
+            op[i] = nums[i + 1] - nums[i];
+            cout << op[i] << " ";
         }
-        return result;
+
+        int count = 0;
+        for(int i = 0; i < op.size(); ++i) {
+            if(i > 0 && op[i]*op[i - 1] < 0) {  // 连续序列
+                count++;
+            } // 连续序列
+            // } else {
+            //     count = 1;
+            // }
+        }
+        return count + 1;
+    }
+    int s2_wiggleMaxLength(vector<int>& nums) {
+        if(nums.size() == 1) return 1;
+        int ans = 0, last = -2, now;
+
+        for(int i = 1; i < nums.size(); ++i) {
+            if(nums[i] == nums[i - 1]) continue;
+
+            now = (nums[i] - nums[i - 1] > 0 ? 1 : -1);
+            if(now != last) ans++;
+            last = now;
+        }
+        return ++ans;
+    }
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        return s2_wiggleMaxLength(nums);
     }
 };
 // @lc code=end

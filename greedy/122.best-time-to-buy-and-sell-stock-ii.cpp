@@ -29,15 +29,29 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  // 买的次数越多  获利越多
-  int maxProfit(vector<int>& prices) {
-    int ans = 0;
-    for (int i = 1; i < prices.size(); i++) {
-      ans += max(prices[i] - prices[i - 1], 0);
-    }
-    return ans;
-  }
+public:
+	int s1_maxProfit(vector<int>& prices) {	// 贪心就是不记录 路径的动态规划
+		int ans = 0;
+		for(int i = 0; i < prices.size(); ++i) {
+			ans += max(prices[i] - prices[i - 1], 0);
+		}
+		return ans;
+	}
+
+	int s2_maxProfit(vector<int>& prices) {
+		vector<int> dp(prices.size(), 0);	// dp[i] i位置最大利益
+		dp[0] = 0;
+		for(int i = 1; i < prices.size(); ++i) {
+			dp[i] = dp[i - 1] + max(prices[i] - prices[i - 1], 0);	// 前为卖 后为不卖
+		}
+
+		return dp[prices.size() - 1];
+	}
+public:
+	int maxProfit(vector<int>& prices) {
+		// return s1_maxProfit(prices);
+		return s2_maxProfit(prices);
+	}
 };
 // @lc code=end
 

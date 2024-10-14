@@ -25,23 +25,22 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  /** 按照绝对值排序 */
-  static bool cmp(int a, int b) { return abs(a) > abs(b); }
-  int largestSumAfterKNegations(vector<int>& nums, int k) {
-    sort(nums.begin(), nums.end(), cmp);
-    for (int i = 0; i < nums.size(); i++) {
-      if (nums[i] < 0 && k > 0) {
-        nums[i] *= -1;
-        k--;
-      }
-    }
-    if (k % 2 == 1) nums[nums.size() - 1] *= -1;
+public:
+    /** 按照绝对值排序 */
+    int largestSumAfterKNegations(vector<int>& nums, int k) {
+		sort(nums.begin(), nums.end(), [](int a, int b) { return abs(a) > abs(b); });
+		for(int i = 0; i < nums.size(); i++) {
+			if(nums[i] < 0 && k > 0) {
+				nums[i] *= -1;
+				k--;
+			}
+		}
+		if (k % 2 == 1) nums[nums.size() - 1] *= -1;
 
-    int ans = 0;
-    for (auto a : nums) ans += a;
-    return ans;
-  }
+		int ans = 0;
+		for (auto a : nums) ans += a;
+		return ans;
+    }
 };
 // @lc code=end
 

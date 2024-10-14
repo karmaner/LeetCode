@@ -34,36 +34,53 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    int maxSubArray(vector<int>& nums) {
-        // // 暴力部分用例超时
-        // int ans = INT_MIN;
-        // for (int i = 0; i < nums.size(); i++) {
-        //     int sum = 0;
-        //     for (int j = i; j < nums.size(); j++) {
-        //         sum += nums[j];
-        //         ans = sum > ans ? sum : ans;
-        //     }
-        // }
-        // return ans;
-
-        // 贪心算法
-        // 连续和为负数  则从新的起点开始  为正数则可以继续加
+    int s1_maxSubArray(vector<int>& nums) {
+        // 暴力部分用例超时
+        int ans = INT_MIN;
+        for (int i = 0; i < nums.size(); i++) {
+            int sum = 0;
+            for (int j = i; j < nums.size(); j++) {
+                sum += nums[j];
+                ans = sum > ans ? sum : ans;
+            }
+        }
+        return ans;
+    }
+    int s2_maxSubArray(vector<int>& nums) { // 双指针 左指针为
         int ans = INT_MIN;
         int sum = 0;
-        for (int left = 0, right = 0; right < nums.size(); right++) {
+        for (int right = 0; right < nums.size(); right++) {
 
             /* 判断连续和 */
             if (sum < 0 && nums[right] >= sum) { // 解决全部事负数的问题
-                left = right;
                 sum = 0;
             }
             sum += nums[right];
             ans = ans > sum ? ans : sum;
         }
         return ans;
+    }
 
-        // 后续有动态规划解法 
+    int s3_maxSubArray(vector<int>& nums) {
+        // dp[i] 表示 i位置的最大和
+        if(nums.size() == 0) return 0;
+        vector<int> dp(nums.size(), 0);
+        dp[0] = nums[0];
+        int ans = dp[0];
+        for(int i = 1; i < nums.size(); ++i) {
+            dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+            if(dp[i] > ans) ans = dp[i];
+        }
+        return ans;
+    }
 
+    int s4_maxSubArray(vector<int>& nums) {
+        // TODO: 分治
+        return 0;
+    }
+public:
+    int maxSubArray(vector<int>& nums) {
+        return s3_maxSubArray(nums);
     }
 };
 // @lc code=end

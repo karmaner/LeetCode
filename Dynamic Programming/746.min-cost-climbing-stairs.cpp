@@ -9,31 +9,52 @@
  * [746] 使用最小花费爬楼梯
  */
 
+
+// @lcpr-template-start
+using namespace std;
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <deque>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <stack>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+// @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int minCostClimbingStairs(vector<int>& cost) {
-    // // dp[i] 表示爬到第i个台阶需要的最小费用
-    // vector<int> dp(cost.size() + 1);
-    // dp[0] = 0;
-    // dp[1] = 0;
+public:
+	int s1_minCostClimbingStairs(vector<int>& cost) {
 
-    // for (int i = 2; i <= cost.size(); i++) {
-    //   dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
-    // }
+		vector<int> dp(cost.size(), 0);
 
-    // return dp[cost.size()];
+		for(int i = 2; i <= cost.size(); ++i) {
+			dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+		}
+		return dp[cost.size()];
+	}
 
-    // 动态规划 优化空间复杂度
-    int dp0 = 0;
-    int dp1 = 0;
-    for (int i = 2; i <= cost.size(); i++) {
-      int next = min(dp0 + cost[i - 2], dp1 + cost[i - 1]);
-      dp0 = dp1;
-      dp1 = next;
-    }
-    return dp1;
-  }
+	int s2_minCostClimbingStairs(vector<int>& cost) {
+		int prev = 0, curr = 0;
+        for (int i = 2; i <= cost.size(); ++i) {
+            int next = min(curr + cost[i-1], prev + cost[i-2]);
+            prev = curr;
+            curr = next;
+        }
+        return curr;
+	}
+public:
+	int minCostClimbingStairs(vector<int>& cost) {
+		// return s1_minCostClimbingStairs(cost);
+		return s2_minCostClimbingStairs(cost);
+	}
 };
 // @lc code=end
 

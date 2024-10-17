@@ -29,38 +29,38 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int fib(int n) {
-    // // 普通递归 o(2^n)
-    // if (n < 2) return n;
-    // return fib(n - 1) + fib(n - 2);
-
-    //     // 动态规划
-    //     if (n < 2) return n;
-
-    //     vector<int> dp(n + 1);
-    //     dp[0] = 0;
-    //     dp[1] = 1;
-
-    //     for (int i = 2; i <= n; ++i) {
-    //       dp[i] = dp[i - 1] + dp[i - 2];
-    //     }
-    //     return dp[n];
-    //   }
-
-    // 动态规划优化 (没必要都存储n前的每一个值) 结合递推
-    if (n < 2) return n;
-    vector<int> dp(2);
-    dp[0] = 0;
-    dp[1] = 1;
-
-    for (int i = 2; i <= n; ++i) {
-      int next = dp[0] + dp[1];
-      dp[0] = dp[1];
-      dp[1] = next;
+public:
+    int s1_fib(int n) {
+        if(n == 0) return 0;
+        if(n == 1) return 1;
+        return  s1_fib(n - 1) + s1_fib(n - 2);
     }
-    return dp[1];
-  }
+
+    int s2_fib(int n) {
+        vector<int> dp(n + 1, 0);
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i = 2; i < n + 1; ++i) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+
+    int s3_fib(int n) {
+        if(n == 0 || n == 1) return n;
+        int pre = 0;
+        int cur = 1;
+        int next = 0;
+        for(int i = 1; i < n; ++i) {
+            next = pre + cur;
+            pre = cur;
+            cur = next;
+        }
+        return cur;
+    }
+    int fib(int n) {
+        return s3_fib(n);
+    }
 };
 // @lc code=end
 

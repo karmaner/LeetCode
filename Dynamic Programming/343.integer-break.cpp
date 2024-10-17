@@ -25,31 +25,52 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int integerBreak(int n) {
-    // 动态规划
-    // vector<int> dp(n + 1);
+public:
+	int s1_integerBreak(int n) {
+		vector<int> dp(n + 1, 0);
+        for (int i = 2; i <= n; i++) {
+            int curMax = 0;
+            for (int j = 1; j < i; j++) {
+                curMax = max(curMax, max(j * (i - j), j * dp[i - j]));
+            }
+            dp[i] = curMax;
+        }
+        return dp[n];
+	}
 
-    // dp[2] = 1;
-    // for (int i = 3; i <= n; ++i) {
-    //   for (int j = 1; j <= i / 2; ++j) {
-    //     dp[i] = max(dp[i], max((i - j) * j, dp[i - j] * j));
-    //   }
-    // }
-    // return dp[n];
-
-    // 贪心
-    if (n == 2) return 1;
-    if (n == 3) return 2;
-    if (n == 4) return 4;
-    int ans = 1;
-    while (n > 4) {
-        ans *= 3;
-        n -= 3;
+	int s2_integerBreak(int n) {
+        if (n <= 3) {
+            return n - 1;
+        }
+        vector <int> dp(n + 1);
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = max(max(2 * (i - 2), 2 * dp[i - 2]), max(3 * (i - 3), 3 * dp[i - 3]));
+        }
+        return dp[n];
     }
-    ans *= n;
-    return ans;
-  }
+
+	int s3_integerBreak(int n) {
+		if(n == 2) {
+			return 1;
+		}
+		if(n == 3) {
+			return 2;
+		}
+		int temp = 1;
+		while(n > 4) {
+			temp *= 3;
+			n -= 3;
+		}
+		return temp * n;
+	}
+
+public:
+	int integerBreak(int n) {
+		// return s1_integerBreak(n);
+		// return s2_integerBreak(n);
+		return s3_integerBreak(n);
+	}
 };
 // @lc code=end
 

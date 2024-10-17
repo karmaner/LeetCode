@@ -25,24 +25,22 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int climbStairs(int n) {
-    // // 简单递归     // 递归边界用例超时
-    // if (n < 3) return n;
-    // return climbStairs(n - 1) + climbStairs(n - 2);
+public:
+	int s1_climbStairs(int n) {  // dp[i] = dp[i - 1] + 1 + dp[i - 2] + 2;
+		if(n <= 1) return n;
+		vector<int> dp(n + 1, 0);
+		dp[1] = 1;
+		dp[2] = 2;
+		for(int i = 3; i <= n; ++i) {
+			dp[i] = dp[i - 1] + dp[i - 2] ;
+		}
+		return dp[n];
+	}
+public:
 
-    // 动态规划一个一个算
-    if (n < 3) return n;
-    vector<int> dp(3);
-    dp[1] = 1;
-    dp[2] = 2;
-    for (int i = 3; i <= n; ++i) {
-      int next = dp[1] + dp[2];
-      dp[1] = dp[2];
-      dp[2] = next;
-    }
-    return dp[2];
-  }
+	int climbStairs(int n) {
+		return s1_climbStairs(n);
+	}
 };
 // @lc code=end
 

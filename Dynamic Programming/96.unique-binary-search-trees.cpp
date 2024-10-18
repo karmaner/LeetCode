@@ -25,18 +25,27 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  int numTrees(int n) {
-    // 左节点 * 右节点
-    vector<int> dp(n + 1);
-    dp[0] = 1;
-    for (int i = 1; i <= n; i++) {
-      for (int j = 1; j <= i; j++) {
-        dp[i] += dp[j - 1] * dp[i - j];
-      }
-    }
-    return dp[n];
-  }
+public:
+	int s1_numTrees(int n) {
+		vector<int> dp(n + 1, 0);
+		dp[1] = 1;
+		dp[0] = 1;
+
+		for(int i = 2; i <= n; ++i) {
+			for(int j = 1; j <= i; ++j) {
+				dp[i] += dp[j - 1] * dp[i - j];
+			}
+		}
+		return dp[n];
+	}
+
+	int s2_numTrees(int n) {
+		return 0;
+	}
+public:
+	int numTrees(int n) {
+		return s1_numTrees(n);
+	}
 };
 // @lc code=end
 

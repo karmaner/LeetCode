@@ -29,28 +29,55 @@ using namespace std;
 // @lcpr-template-end
 // @lc code=start
 class Solution {
- public:
-  bool canPartition(vector<int>& nums) {
-    int sum = 0;
+	bool ans = false;
+	void backtrack(int start, vector<int>& nums, vector<bool>& used, int sum, int target) {
+		if(sum > target) return;
+		if(sum == target) {
+			ans = true;
+			return;
+		}
+		for(int i = 0; i < nums.size(); ++i) {
+			if(used[i]) continue;
+			sum += nums[i];
+			used[i] = true;
+			backtrack(i + 1, nums, used, sum, target);
+			used[i] = false;
+			sum -= nums[i];
+		}
+		return;
+}
+public:
+	bool s1_canPartition(vector<int>& nums) {
+		int sum = 0;
+		for(auto i : nums) sum += i;
+		if(sum % 2) return false;
+        vector<int> dp(10001, 0);
 
-    vector<int> dp(100001, 0);
+		int target = sum / 2;
 
-    for (auto i : nums) {
-      sum += i;
-    }
-    if (sum % 2 == 1) return false;
+        // 开始 01背包
+        for(int i = 0; i < nums.size(); i++) {
+            for(int j = target; j >= nums[i]; j--) { // 每一个元素一定是不可重复放入，所以从大到小遍历
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+            }
+        }
+        // 集合中的元素正好可以凑成总和target
+        if (dp[target] == target) return true;
+        return false;
 
-    int target = sum / 2;
+	}
 
-    for (int i = 0; i < nums.size(); i++) {
-      for (int j = target; j >= nums[i]; j--) {
-        dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
-      }
-    }
-    if (dp[target] == target) return true;
-
-    return false;
-  }
+public:
+	bool canPartition(vector<int>& nums) {
+		// // 超时
+		// int sum = 0;
+		// for(auto i : nums) sum += i;
+		// vector<bool> used(nums.size(), false);
+		// if(sum % 2) return false;
+		// backtrack(0, nums, used, 0, sum / 2);
+		// return ans;
+		return s1_canPartition(nums);
+	}
 };
 // @lc code=end
 
